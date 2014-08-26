@@ -1,0 +1,31 @@
+package zipper;
+
+import java.util.zip.*;
+import javax.swing.JOptionPane;
+import java.io.*;
+
+public class Decompress extends Thread {
+  private JOptionPane jOptionPane1 = new JOptionPane();
+  private File toDecompress;
+  private String fileName;
+
+  public Decompress(File toDecompress){
+    this.toDecompress = toDecompress;
+    fileName = toDecompress.getAbsolutePath();
+  }
+  public void run(){
+    try{
+      ZipInputStream zipIn = new ZipInputStream(new FileInputStream(fileName));
+      ZipEntry entry = zipIn.getNextEntry();
+      String name = entry.getName();
+      System.out.println("Zip entry name: " + name);
+      String decompressed = fileName.substring(0,fileName.lastIndexOf("/")).concat(name);
+      System.out.println("Decompressed File Name: " );
+      //      File outputFile = new File(
+      }catch(IOException e){}
+
+      JOptionPane.showMessageDialog(jOptionPane1, "Decompression Complete!");
+  }
+
+
+}

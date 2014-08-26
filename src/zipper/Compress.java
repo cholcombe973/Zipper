@@ -1,0 +1,45 @@
+package zipper;
+
+import java.util.zip.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.channels.*;
+import javax.swing.JOptionPane;
+
+public class Compress extends Thread {
+  private Deflater compresser;
+  private File finishedFile;
+  private ZipOutputStream zipOut;
+  private File toCompress;
+  private JOptionPane jOptionPane1 = new JOptionPane();
+
+  public Compress(File toZip){
+    toCompress = toZip;
+  }
+  public void run(){
+    String fileName = toCompress.getAbsolutePath().substring(0,toCompress.getAbsolutePath().lastIndexOf('.')).concat(".zip");
+    System.out.println("Finished filename: " + fileName);
+    ByteBuffer b = ByteBuffer.allocate(4096);
+    try{
+      FileChannel fChannel = new FileInputStream(toCompress).getChannel();
+      zipOut = new ZipOutputStream(new FileOutputStream(fileName));
+      zipOut.putNextEntry(new ZipEntry(toCompress.getName()));
+      while(fChannel.read(b)!=-1){
+        fChannel.read(b);
+        b.flip();
+        if(b.hasArray()){
+          byte[] output = b.array();
+          zipOut.write(output);
+          b.clear();
+        }
+        else{
+          JOptionPane.showMessageDialog(jOptionPane1,"No array from byteBuffer error","Buffer Error",JOptionPane.ERROR_MESSAGE);
+        }
+      }
+      zipOut.closeEntry();
+      zipOut.close();
+      }catch(FileNotFoundException e){}
+      catch(IOException e){}
+      JOptionPane.showMessageDialog(jOptionPane1,"Zip operation complete!");
+  }
+}

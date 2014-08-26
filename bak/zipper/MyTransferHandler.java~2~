@@ -1,0 +1,20 @@
+package zipper;
+
+import javax.swing.*;
+import java.awt.datatransfer.*;
+import java.io.*;
+
+public class MyTransferHandler extends TransferHandler{
+
+  public boolean importData(JComponent c, Transferable t){
+
+
+
+
+
+    return false;
+  }
+
+
+
+}

@@ -1,0 +1,134 @@
+package zipper;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.io.*;
+
+public class Frame1 extends JFrame {
+  private JPanel contentPane;
+  private JMenuBar jMenuBar1 = new JMenuBar();
+  private JMenu jMenuFile = new JMenu();
+  private JMenuItem jMenuFileExit = new JMenuItem();
+  private JMenu jMenuHelp = new JMenu();
+  private JMenuItem jMenuHelpAbout = new JMenuItem();
+  private JButton jButton1 = new JButton();
+  private JOptionPane jOptionPane1 = new JOptionPane();
+  private File fileToCompress;
+  private File fileToDecompress;
+  private JButton jButton2 = new JButton();
+  private JButton jButton3 = new JButton();
+  private JButton jButton4 = new JButton();
+
+  //Construct the frame
+  public Frame1() {
+    enableEvents(AWTEvent.WINDOW_EVENT_MASK);
+    try {
+      jbInit();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+  //Component initialization
+  private void jbInit() throws Exception  {
+    //setIconImage(Toolkit.getDefaultToolkit().createImage(Frame1.class.getResource("[Your Icon]")));
+    contentPane = (JPanel) this.getContentPane();
+    contentPane.setLayout(null);
+    this.setSize(new Dimension(400, 300));
+    this.setTitle("The Zipper");
+    jMenuFile.setText("File");
+    jMenuFileExit.setText("Exit");
+    jMenuFileExit.addActionListener(new ActionListener()  {
+      public void actionPerformed(ActionEvent e) {
+        jMenuFileExit_actionPerformed(e);
+      }
+    });
+    jMenuHelp.setText("Help");
+    jMenuHelpAbout.setText("About");
+    jMenuHelpAbout.addActionListener(new ActionListener()  {
+      public void actionPerformed(ActionEvent e) {
+        jMenuHelpAbout_actionPerformed(e);
+      }
+    });
+    jButton1.setBounds(new Rectangle(76, 119, 129, 31));
+    jButton1.setText("Open File to Zip");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton1_actionPerformed(e);
+      }
+    });
+    jButton2.setBounds(new Rectangle(76, 169, 129, 31));
+    jButton2.setText("Zip File");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton2_actionPerformed(e);
+      }
+    });
+    jButton3.setBounds(new Rectangle(227, 119, 136, 31));
+    jButton3.setText("Open File to UnZip");
+    jButton3.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton3_actionPerformed(e);
+      }
+    });
+    jButton4.setBounds(new Rectangle(227, 169, 136, 31));
+    jButton4.setText("UnZip File");
+    jButton4.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        jButton4_actionPerformed(e);
+      }
+    });
+    jMenuFile.add(jMenuFileExit);
+    jMenuHelp.add(jMenuHelpAbout);
+    jMenuBar1.add(jMenuFile);
+    jMenuBar1.add(jMenuHelp);
+    contentPane.add(jButton1, null);
+    contentPane.add(jButton2, null);
+    contentPane.add(jButton3, null);
+    contentPane.add(jButton4, null);
+    this.setJMenuBar(jMenuBar1);
+  }
+  //File | Exit action performed
+  public void jMenuFileExit_actionPerformed(ActionEvent e) {
+    System.exit(0);
+  }
+  //Help | About action performed
+  public void jMenuHelpAbout_actionPerformed(ActionEvent e) {
+  }
+  //Overridden so we can exit when window is closed
+  protected void processWindowEvent(WindowEvent e) {
+    super.processWindowEvent(e);
+    if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+      jMenuFileExit_actionPerformed(null);
+    }
+  }
+
+  private void jButton1_actionPerformed(ActionEvent e) {
+    JFileChooser fc = new JFileChooser();
+    int returnVal = fc.showOpenDialog(jOptionPane1);
+    if(returnVal == fc.APPROVE_OPTION){
+      File f = fc.getSelectedFile();
+      fileToCompress = f;
+    }
+  }
+
+  private void jButton2_actionPerformed(ActionEvent e) {
+    Compress c = new Compress(fileToCompress);
+    c.start();
+  }
+
+  private void jButton3_actionPerformed(ActionEvent e) {
+    JFileChooser fc = new JFileChooser();
+    int returnVal  = fc.showOpenDialog(jOptionPane1);
+    if(returnVal == fc.APPROVE_OPTION){
+      File f = fc.getSelectedFile();
+      fileToDecompress = f;
+    }
+  }
+
+  private void jButton4_actionPerformed(ActionEvent e) {
+    Decompress d = new Decompress(fileToDecompress);
+    d.start();
+  }
+}

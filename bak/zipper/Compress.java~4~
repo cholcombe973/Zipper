@@ -1,0 +1,46 @@
+package zipper;
+
+import java.util.zip.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.channels.*;
+
+public class Compress extends Thread {
+  private Deflater compresser;
+  private File finishedFile;
+  private ZipOutputStream zipOut;
+  private File toCompress;
+
+  public Compress(File toZip){
+    toCompress = toZip;
+  }
+  public void run(){
+    System.out.println("File being compressed: " + toCompress.getAbsolutePath());
+    String fileName = toCompress.getAbsolutePath().substring(0,toCompress.getAbsolutePath().lastIndexOf('.'));
+    System.out.println("Chopped filename: " + fileName);
+    /*
+    String fileName = "Output.zip";
+    ByteBuffer b = ByteBuffer.allocateDirect(4096);
+    try{
+      FileChannel fChannel = new FileInputStream(toCompress).getChannel();
+      zipOut = new ZipOutputStream(new FileOutputStream(fileName));
+      zipOut.putNextEntry(new ZipEntry(toCompress.getName()));
+      while(fChannel.read(b)!=-1){
+        fChannel.read(b);
+        b.flip();
+        if(b.hasArray()){
+          byte[] output = b.array();
+          zipOut.write(output);
+          b.clear();
+        }
+        else{
+          System.out.println("No array error from byteBuffer");
+        }
+      }
+      zipOut.closeEntry();
+      zipOut.close();
+      }catch(FileNotFoundException e){}
+      catch(IOException e){}
+*/
+  }
+}
